@@ -19,10 +19,7 @@ This project uses [Husky](https://typicode.github.io/husky/) to automatically ru
    git config core.hooksPath .husky
    ```
 
-   Or run:
-   ```bash
-   npm run prepare
-   ```
+   This is a one-time setup. The hooks are now active!
 
 ## How It Works
 

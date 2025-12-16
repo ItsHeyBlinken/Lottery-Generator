@@ -4,7 +4,7 @@
   "description": "PowerBall Lottery Generator - Desktop and Web Applications",
   "private": true,
   "scripts": {
-    "prepare": "husky",
+    "prepare": "node -e \"try { require('husky').install() } catch(e) {}\"",
     "electron:start": "cd electron && npm start",
     "electron:dev": "cd electron && npm run dev",
     "electron:build": "cd electron && npm run build:win",
