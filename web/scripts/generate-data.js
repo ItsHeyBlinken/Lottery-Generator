@@ -32,7 +32,7 @@ const lastUpdatedDate = latestDateMatch ? latestDateMatch[1] : '12/15/2025';
 const dataJs = `/**
  * Embedded PowerBall Historical Data (Web Version)
  * Data from Powerball_12_16_2025.txt
- * Generated: ${new Date().toISOString()}
+ * Generated: ${new Date().toISOString().split('T')[0]}
  * Total Drawings: ${drawingLines.length}
  */
 

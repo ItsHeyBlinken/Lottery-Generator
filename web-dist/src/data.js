@@ -1,7 +1,7 @@
 /**
  * Embedded PowerBall Historical Data (Web Version)
  * Data from Powerball_12_16_2025.txt
- * Generated: 2025-12-16T19:33:34.411Z
+ * Generated: 2025-12-16
  * Total Drawings: 1882
  */
 
