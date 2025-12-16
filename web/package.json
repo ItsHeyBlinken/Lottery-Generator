@@ -1,0 +1,17 @@
+{
+  "name": "powerball-lottery-generator-web",
+  "version": "1.0.0",
+  "description": "Web version of PowerBall Lottery Generator",
+  "scripts": {
+    "dev": "npx serve . -p 3000",
+    "build": "node build.js"
+  },
+  "keywords": [
+    "powerball",
+    "lottery",
+    "web"
+  ],
+  "author": "",
+  "license": "MIT"
+}
+

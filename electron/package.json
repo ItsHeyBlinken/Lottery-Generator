@@ -1,0 +1,55 @@
+{
+  "name": "powerball-lottery-generator-electron",
+  "version": "1.0.0",
+  "description": "Electron desktop app for PowerBall Lottery Generator",
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "dist": "electron-builder --publish=never",
+    "prepare:coolify": "node prepare-for-coolify.js"
+  },
+  "keywords": [
+    "powerball",
+    "lottery",
+    "electron",
+    "generator"
+  ],
+  "author": "",
+  "license": "MIT",
+  "build": {
+    "appId": "com.powerball.generator",
+    "productName": "PowerBall Lottery Generator",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "data/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.13.3"
+  }
+}

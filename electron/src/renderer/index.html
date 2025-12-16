@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; style-src-elem 'self' https://fonts.googleapis.com 'unsafe-inline'">
+  <title>PowerBall Lottery Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <span class="logo-icon">🎱</span>
+        <h1>PowerBall Generator</h1>
+      </div>
+      <div class="data-status" id="dataStatus">
+        <span class="status-indicator loading"></span>
+        <span class="status-text">Loading data...</span>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Generator Section -->
+      <section class="generator-section">
+        <div class="generator-controls">
+          <button id="generateOneBtn" class="btn btn-primary" disabled>
+            <span class="btn-icon">🎲</span>
+            Generate Ticket
+          </button>
+          <div class="multi-generate">
+            <input type="number" id="ticketCount" min="1" max="100" value="5" class="ticket-input">
+            <button id="generateMultiBtn" class="btn btn-secondary" disabled>
+              Generate Multiple
+            </button>
+          </div>
+        </div>
+
+        <!-- Latest Ticket Display -->
+        <div class="latest-ticket" id="latestTicket">
+          <h3>Your Numbers</h3>
+          <div class="ticket-display empty">
+            <div class="white-balls">
+              <div class="ball-container">
+                <div class="ball white">?</div>
+                <span class="prob-label">--%</span>
+              </div>
+              <div class="ball-container">
+                <div class="ball white">?</div>
+                <span class="prob-label">--%</span>
+              </div>
+              <div class="ball-container">
+                <div class="ball white">?</div>
+                <span class="prob-label">--%</span>
+              </div>
+              <div class="ball-container">
+                <div class="ball white">?</div>
+                <span class="prob-label">--%</span>
+              </div>
+              <div class="ball-container">
+                <div class="ball white">?</div>
+                <span class="prob-label">--%</span>
+              </div>
+            </div>
+            <div class="powerball-section">
+              <div class="ball-container">
+                <div class="ball powerball">?</div>
+                <span class="prob-label">--%</span>
+              </div>
+              <span class="powerball-label">PowerBall</span>
+            </div>
+          </div>
+          
+          <!-- Ticket Rating -->
+          <div class="ticket-rating" id="ticketRating" style="display: none;">
+            <span class="rating-label">--</span>
+            <span class="rating-value">--%</span>
+            <span class="rating-description">Generate a ticket to see rating</span>
+          </div>
+          
+          <!-- Probability Legend -->
+          <div class="prob-legend">
+            <span class="legend-item"><span class="legend-dot hot"></span> Hot (above expected)</span>
+            <span class="legend-item"><span class="legend-dot cold"></span> Cold (below expected)</span>
+            <span class="legend-item"><span class="legend-dot average"></span> Average</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Info Panel -->
+      <aside class="info-panel">
+        <div class="stats-card">
+          <h3>Session Statistics</h3>
+          <div class="stat-item">
+            <span class="stat-label">Tickets Generated</span>
+            <span class="stat-value" id="ticketCountStat">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Unique Combinations</span>
+            <span class="stat-value" id="uniqueCountStat">0</span>
+          </div>
+        </div>
+
+        <div class="stats-card">
+          <h3>Odds Information</h3>
+          <div class="stat-item">
+            <span class="stat-label">Jackpot Odds</span>
+            <span class="stat-value">1 in 292,201,338</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Total Combinations</span>
+            <span class="stat-value">292,201,338</span>
+          </div>
+        </div>
+
+        <div class="stats-card data-info">
+          <h3>Data Information</h3>
+          <div class="stat-item">
+            <span class="stat-label">Historical Drawings</span>
+            <span class="stat-value" id="drawingCountStat">--</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Latest Drawing</span>
+            <span class="stat-value small" id="latestDateStat">--</span>
+          </div>
+        </div>
+        
+        <!-- Rating Guide -->
+        <div class="stats-card rating-guide">
+          <div class="guide-header" id="ratingGuideToggle">
+            <h3>❓ How Ratings Work</h3>
+            <span class="guide-toggle-icon" id="guideToggleIcon">▼</span>
+          </div>
+          <div class="guide-content" id="ratingGuideContent">
+            <div class="guide-section">
+              <h4>What the % Means</h4>
+              <p>Each number's <strong>relative strength</strong> compares how often it has appeared vs. how often it would if perfectly random.</p>
+              <ul>
+                <li><strong>100%</strong> = Appears at expected frequency</li>
+                <li><strong>&gt;100%</strong> = Appears more often (hot)</li>
+                <li><strong>&lt;100%</strong> = Appears less often (cold)</li>
+              </ul>
+            </div>
+            <div class="guide-section">
+              <h4>Rating Scale</h4>
+              <div class="rating-scale">
+                <div class="scale-item very-hot">
+                  <span class="scale-badge">🔥 Very Hot</span>
+                  <span class="scale-range">115%+</span>
+                </div>
+                <div class="scale-item hot">
+                  <span class="scale-badge">🔥 Hot</span>
+                  <span class="scale-range">105-115%</span>
+                </div>
+                <div class="scale-item average">
+                  <span class="scale-badge">Average</span>
+                  <span class="scale-range">95-105%</span>
+                </div>
+                <div class="scale-item cold">
+                  <span class="scale-badge">❄️ Cold</span>
+                  <span class="scale-range">85-95%</span>
+                </div>
+                <div class="scale-item very-cold">
+                  <span class="scale-badge">❄️ Very Cold</span>
+                  <span class="scale-range">&lt;85%</span>
+                </div>
+              </div>
+            </div>
+            <div class="guide-section">
+              <h4>Ticket Rating</h4>
+              <p>A ticket's rating is the <strong>average</strong> of all 6 numbers' relative strengths.</p>
+            </div>
+            <p class="guide-disclaimer">⚠️ Past frequency does not predict future results!</p>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Add New Drawing Section -->
+    <section class="add-drawing-section" id="addDrawingSection">
+      <div class="section-header" id="addDrawingToggle">
+        <h3>➕ Add New Drawing</h3>
+        <span class="toggle-icon" id="toggleIcon">▼</span>
+      </div>
+      <div class="add-drawing-form" id="addDrawingForm">
+        <p class="form-description">Enter a new PowerBall drawing result to update the historical data.</p>
+        
+        <div class="form-row">
+          <div class="form-group date-group">
+            <label for="drawingDate">Drawing Date</label>
+            <input type="text" id="drawingDate" placeholder="MM/DD/YYYY" maxlength="10" class="form-input">
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label>White Balls (1-69)</label>
+            <div class="ball-inputs">
+              <input type="number" id="wb1" min="1" max="69" placeholder="1" class="ball-input white-input">
+              <input type="number" id="wb2" min="1" max="69" placeholder="2" class="ball-input white-input">
+              <input type="number" id="wb3" min="1" max="69" placeholder="3" class="ball-input white-input">
+              <input type="number" id="wb4" min="1" max="69" placeholder="4" class="ball-input white-input">
+              <input type="number" id="wb5" min="1" max="69" placeholder="5" class="ball-input white-input">
+            </div>
+          </div>
+          
+          <div class="form-group powerball-group">
+            <label for="pbInput">PowerBall (1-26)</label>
+            <input type="number" id="pbInput" min="1" max="26" placeholder="PB" class="ball-input powerball-input">
+          </div>
+        </div>
+        
+        <div class="form-actions">
+          <button id="addDrawingBtn" class="btn btn-add">
+            <span class="btn-icon">💾</span>
+            Save Drawing
+          </button>
+          <button id="clearFormBtn" class="btn btn-clear">
+            Clear
+          </button>
+        </div>
+        
+        <div class="form-message" id="formMessage" style="display: none;"></div>
+      </div>
+    </section>
+
+    <!-- Ticket History -->
+    <section class="ticket-history" id="ticketHistory">
+      <div class="history-header">
+        <h3>Generated Tickets <span class="history-count" id="historyCount">(0)</span></h3>
+        <div class="sort-controls">
+          <span class="sort-label">Sort:</span>
+          <button id="sortNewest" class="sort-btn active" title="Newest First">Newest</button>
+          <button id="sortHot" class="sort-btn" title="Hottest First">🔥 Hot</button>
+          <button id="sortCold" class="sort-btn" title="Coldest First">❄️ Cold</button>
+        </div>
+      </div>
+      
+      <!-- Leaderboard -->
+      <div class="leaderboard" id="leaderboard" style="display: none;">
+        <div class="leaderboard-item hottest">
+          <div class="leaderboard-header">
+            <span class="leaderboard-icon">🔥</span>
+            <span class="leaderboard-title">Hottest Ticket</span>
+          </div>
+          <div class="leaderboard-ticket" id="hottestTicket">
+            <span class="leaderboard-empty">--</span>
+          </div>
+        </div>
+        <div class="leaderboard-item coldest">
+          <div class="leaderboard-header">
+            <span class="leaderboard-icon">❄️</span>
+            <span class="leaderboard-title">Coldest Ticket</span>
+          </div>
+          <div class="leaderboard-ticket" id="coldestTicket">
+            <span class="leaderboard-empty">--</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="history-list" id="historyList">
+        <div class="empty-history">Generate tickets to see them here</div>
+      </div>
+    </section>
+
+    <!-- Error Display -->
+    <div class="error-container" id="errorContainer" style="display: none;">
+      <div class="error-message">
+        <span class="error-icon">⚠️</span>
+        <span class="error-text" id="errorText"></span>
+        <button class="error-close" id="errorClose">×</button>
+      </div>
+    </div>
+
+    <!-- Success Message Display -->
+    <div class="success-container" id="successContainer" style="display: none;">
+      <div class="success-message">
+        <span class="success-icon">✅</span>
+        <span class="success-text" id="successText"></span>
+        <button class="success-close" id="successClose">×</button>
+      </div>
+    </div>
+
+    <!-- Disclaimer -->
+    <footer class="disclaimer">
+      <p>⚠️ <strong>Disclaimer:</strong> Lottery drawings are random. This tool does not improve odds or guarantee wins. For entertainment purposes only.</p>
+    </footer>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>

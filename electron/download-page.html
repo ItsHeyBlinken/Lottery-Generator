@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PowerBall Lottery Generator - Download</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      width: 100%;
+      background: rgba(26, 26, 46, 0.9);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo-icon {
+      font-size: 4rem;
+      filter: drop-shadow(0 0 20px rgba(233, 69, 96, 0.5));
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #e94560, #ffc107);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #a0a0b8;
+      font-size: 1rem;
+      margin-bottom: 30px;
+    }
+
+    .description {
+      background: rgba(22, 33, 62, 0.5);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 30px;
+      border-left: 4px solid #e94560;
+    }
+
+    .description p {
+      line-height: 1.6;
+      color: #a0a0b8;
+      margin-bottom: 10px;
+    }
+
+    .description p:last-child {
+      margin-bottom: 0;
+    }
+
+    .features {
+      list-style: none;
+      margin: 20px 0;
+    }
+
+    .features li {
+      padding: 8px 0;
+      padding-left: 25px;
+      position: relative;
+      color: #a0a0b8;
+    }
+
+    .features li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: #4caf50;
+      font-weight: bold;
+    }
+
+    .download-section {
+      text-align: center;
+      margin: 30px 0;
+    }
+
+    .download-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #e94560, #c23652);
+      color: white;
+      padding: 16px 40px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
+      margin: 10px;
+    }
+
+    .download-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(233, 69, 96, 0.6);
+    }
+
+    .download-btn:active {
+      transform: translateY(0);
+    }
+
+    .file-info {
+      margin-top: 15px;
+      font-size: 0.85rem;
+      color: #6c6c8a;
+    }
+
+    .requirements {
+      background: rgba(22, 33, 62, 0.3);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 30px;
+    }
+
+    .requirements h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      margin-bottom: 10px;
+      color: #ffc107;
+    }
+
+    .requirements ul {
+      list-style: none;
+      color: #a0a0b8;
+    }
+
+    .requirements li {
+      padding: 5px 0;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .requirements li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: #ffc107;
+    }
+
+    .disclaimer {
+      margin-top: 30px;
+      padding: 15px;
+      background: rgba(233, 69, 96, 0.1);
+      border: 1px solid #e94560;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #a0a0b8;
+    }
+
+    .disclaimer strong {
+      color: #e94560;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 30px 20px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      .download-btn {
+        padding: 14px 30px;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <div class="logo-icon">🎱</div>
+      <h1>PowerBall Lottery Generator</h1>
+      <p class="subtitle">Desktop Application v1.0.0</p>
+    </div>
+
+    <div class="description">
+      <p><strong>A personal desktop application</strong> that analyzes historical PowerBall drawing data and generates suggested number combinations using frequency-based logic.</p>
+      <p>Perfect for entertainment and learning about probability!</p>
+      
+      <ul class="features">
+        <li>Analyzes historical PowerBall data</li>
+        <li>Generates tickets using weighted randomness</li>
+        <li>Shows hot/cold number ratings</li>
+        <li>Add new drawings to keep data updated</li>
+        <li>Sort and compare generated tickets</li>
+      </ul>
+    </div>
+
+    <div class="download-section">
+      <a href="PowerBall Lottery Generator Setup.exe" class="download-btn" download>
+        ⬇️ Download for Windows
+      </a>
+      <p class="file-info">Windows 10/11 • ~150 MB • No installation required</p>
+    </div>
+
+    <div class="requirements">
+      <h3>System Requirements</h3>
+      <ul>
+        <li>Windows 10 or Windows 11</li>
+        <li>No additional software needed</li>
+        <li>Works offline after installation</li>
+      </ul>
+    </div>
+
+    <div class="disclaimer">
+      <p>⚠️ <strong>Disclaimer:</strong> Lottery drawings are random. This tool does not improve odds or guarantee wins. For entertainment and educational purposes only.</p>
+    </div>
+  </div>
+</body>
+</html>
+
