@@ -8,7 +8,6 @@
 // ============================================
 let isDataLoaded = false;
 let isFormExpanded = false;
-let isUploadExpanded = false;
 let isGuideExpanded = false;
 let generatedTickets = [];
 let currentSort = 'newest';
@@ -33,6 +32,7 @@ const elements = {
   uniqueCountStat: document.getElementById('uniqueCountStat'),
   drawingCountStat: document.getElementById('drawingCountStat'),
   latestDateStat: document.getElementById('latestDateStat'),
+  dataLastUpdatedStat: document.getElementById('dataLastUpdatedStat'),
   historyList: document.getElementById('historyList'),
   historyCount: document.getElementById('historyCount'),
   dataStatus: document.getElementById('dataStatus'),
@@ -56,14 +56,8 @@ const elements = {
   addDrawingBtn: document.getElementById('addDrawingBtn'),
   clearFormBtn: document.getElementById('clearFormBtn'),
   formMessage: document.getElementById('formMessage'),
-  // Upload form elements
-  uploadToggle: document.getElementById('uploadToggle'),
-  uploadForm: document.getElementById('uploadForm'),
-  uploadToggleIcon: document.getElementById('uploadToggleIcon'),
-  fileInput: document.getElementById('fileInput'),
-  uploadBtn: document.getElementById('uploadBtn'),
+  // Reset button
   resetDataBtn: document.getElementById('resetDataBtn'),
-  uploadMessage: document.getElementById('uploadMessage'),
   // Sort buttons
   sortNewest: document.getElementById('sortNewest'),
   sortHot: document.getElementById('sortHot'),
@@ -121,10 +115,7 @@ function setupEventListeners() {
   });
   elements.pbInput.addEventListener('blur', () => validateBallInput(elements.pbInput, 1, 26));
   
-  // Upload form
-  elements.uploadToggle.addEventListener('click', toggleUploadForm);
-  elements.fileInput.addEventListener('change', handleFileSelect);
-  elements.uploadBtn.addEventListener('click', handleFileUpload);
+  // Reset button
   elements.resetDataBtn.addEventListener('click', resetToDefaultData);
   
   // Sort buttons
@@ -186,6 +177,10 @@ async function loadData() {
         elements.latestDateStat.textContent = drawings[0].date;
       }
       
+      // Display last updated date (source of truth)
+      const lastUpdated = window.DATA_LAST_UPDATED || '12/15/2025';
+      elements.dataLastUpdatedStat.textContent = lastUpdated;
+      
       elements.generateOneBtn.disabled = false;
       elements.generateMultiBtn.disabled = false;
       
@@ -246,6 +241,10 @@ async function loadData() {
     if (drawings.length > 0) {
       elements.latestDateStat.textContent = drawings[0].date;
     }
+    
+    // Display last updated date (source of truth)
+    const lastUpdated = window.DATA_LAST_UPDATED || '12/15/2025';
+    elements.dataLastUpdatedStat.textContent = lastUpdated;
     
     elements.generateOneBtn.disabled = false;
     elements.generateMultiBtn.disabled = false;
@@ -689,17 +688,6 @@ function toggleAddDrawingForm() {
   }
 }
 
-function toggleUploadForm() {
-  isUploadExpanded = !isUploadExpanded;
-  
-  if (isUploadExpanded) {
-    elements.uploadForm.classList.add('expanded');
-    elements.uploadToggleIcon.textContent = '▲';
-  } else {
-    elements.uploadForm.classList.remove('expanded');
-    elements.uploadToggleIcon.textContent = '▼';
-  }
-}
 
 function toggleRatingGuide() {
   isGuideExpanded = !isGuideExpanded;
@@ -814,6 +802,10 @@ async function handleAddDrawing() {
   elements.latestDateStat.textContent = date;
   updateDataStatus('success', `${drawings.length} drawings loaded`);
   
+  // Display last updated date (source of truth - doesn't change with user additions)
+  const lastUpdated = window.DATA_LAST_UPDATED || '12/15/2025';
+  elements.dataLastUpdatedStat.textContent = lastUpdated;
+  
   showSuccess(`Drawing for ${date} added successfully!`);
   showFormMessage(`Drawing for ${date} added!`, 'success');
   clearDrawingForm();
@@ -847,70 +839,6 @@ function showFormMessage(message, type) {
 }
 
 // ============================================
-// File Upload
-// ============================================
-function handleFileSelect() {
-  elements.uploadBtn.disabled = !elements.fileInput.files.length;
-}
-
-function handleFileUpload() {
-  const file = elements.fileInput.files[0];
-  if (!file) return;
-  
-  const reader = new FileReader();
-  
-  reader.onload = function(e) {
-    const content = e.target.result;
-    const result = window.DataParser.parseDataContent(content);
-    
-    if (result.drawings.length === 0) {
-      showUploadMessage('No valid drawings found in file.', 'error');
-      return;
-    }
-    
-    // Merge with existing user drawings
-    const userDrawings = loadUserDrawings();
-    const existingDates = new Set(result.drawings.map(d => d.date));
-    
-    for (const ud of userDrawings) {
-      if (!existingDates.has(ud.date)) {
-        result.drawings.unshift(ud);
-      }
-    }
-    
-    // Update data
-    drawings = result.drawings;
-    frequencyData = window.FrequencyAnalyzer.analyzeFrequency(drawings);
-    
-    // Update cache
-    const currentVersion = window.DATA_VERSION || '1.0.0';
-    window.IndexedDBCache.saveCache({
-      drawings: drawings,
-      frequencyData: frequencyData
-    }, currentVersion).catch(cacheError => {
-      console.warn('Failed to update cache (non-critical):', cacheError);
-    });
-    
-    // Update UI
-    elements.drawingCountStat.textContent = drawings.length.toLocaleString();
-    if (drawings.length > 0) {
-      elements.latestDateStat.textContent = drawings[0].date;
-    }
-    updateDataStatus('success', `${drawings.length} drawings loaded`);
-    
-    showSuccess(`Loaded ${result.drawings.length} drawings from file!`);
-    showUploadMessage(`Loaded ${result.drawings.length} drawings!`, 'success');
-    
-    elements.fileInput.value = '';
-    elements.uploadBtn.disabled = true;
-  };
-  
-  reader.onerror = function() {
-    showUploadMessage('Failed to read file.', 'error');
-  };
-  
-  reader.readAsText(file);
-}
 
 function resetToDefaultData() {
   if (!confirm('This will clear all user-added drawings and reset to the default data. Continue?')) {
@@ -940,20 +868,11 @@ function resetToDefaultData() {
   }
   updateDataStatus('success', `${drawings.length} drawings loaded`);
   
-  showSuccess('Data reset to default!');
-  showUploadMessage('Data reset to default.', 'success');
-}
-
-function showUploadMessage(message, type) {
-  elements.uploadMessage.textContent = message;
-  elements.uploadMessage.className = `form-message ${type}`;
-  elements.uploadMessage.style.display = 'block';
+  // Display last updated date (source of truth)
+  const lastUpdated = window.DATA_LAST_UPDATED || '12/15/2025';
+  elements.dataLastUpdatedStat.textContent = lastUpdated;
   
-  if (type === 'success') {
-    setTimeout(() => {
-      elements.uploadMessage.style.display = 'none';
-    }, 3000);
-  }
+  showSuccess('Data reset to default!');
 }
 
 // ============================================

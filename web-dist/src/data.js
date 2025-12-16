@@ -1,12 +1,16 @@
 /**
  * Embedded PowerBall Historical Data (Web Version)
  * Data from Powerball_12_16_2025.txt
- * Generated: 2025-12-16T19:23:33.055Z
+ * Generated: 2025-12-16T19:32:15.456Z
  * Total Drawings: 1882
  */
 
 // Data version - increment when data changes
 const DATA_VERSION = '1.0.0';
+
+// Last updated date - source of truth for all users
+// This is the date of the most recent drawing in the embedded data
+const DATA_LAST_UPDATED = '12/15/2025';
 
 const POWERBALL_DATA = `Results for Powerball
 12/15/2025; 23,35,59,63,68; Powerball: 2
@@ -1892,6 +1896,7 @@ const POWERBALL_DATA = `Results for Powerball
 2/6/2010; 14,22,52,54,59; Powerball: 4
 2/3/2010; 17,22,36,37,52; Powerball: 24`;
 
-// Export the raw data and version
+// Export the raw data, version, and last updated date
 window.POWERBALL_RAW_DATA = POWERBALL_DATA;
 window.DATA_VERSION = DATA_VERSION;
+window.DATA_LAST_UPDATED = DATA_LAST_UPDATED;

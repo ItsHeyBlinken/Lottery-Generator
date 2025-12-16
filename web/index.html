@@ -127,6 +127,10 @@
             <span class="stat-label">Latest Drawing</span>
             <span class="stat-value small" id="latestDateStat">--</span>
           </div>
+          <div class="stat-item">
+            <span class="stat-label">Data Last Updated</span>
+            <span class="stat-value small" id="dataLastUpdatedStat">--</span>
+          </div>
         </div>
         
         <!-- Rating Guide -->
@@ -187,7 +191,7 @@
         <span class="toggle-icon" id="toggleIcon">▼</span>
       </div>
       <div class="add-drawing-form" id="addDrawingForm">
-        <p class="form-description">Enter a new PowerBall drawing result. Data is stored in your browser's local storage.</p>
+        <p class="form-description">Enter a new PowerBall drawing result. Data is stored locally in your browser only and will not affect other users.</p>
         
         <div class="form-row">
           <div class="form-group date-group">
@@ -222,39 +226,12 @@
           <button id="clearFormBtn" class="btn btn-clear">
             Clear
           </button>
-        </div>
-        
-        <div class="form-message" id="formMessage" style="display: none;"></div>
-      </div>
-    </section>
-
-    <!-- Upload Data Section -->
-    <section class="add-drawing-section" id="uploadSection">
-      <div class="section-header" id="uploadToggle">
-        <h3>📁 Upload Data File</h3>
-        <span class="toggle-icon" id="uploadToggleIcon">▼</span>
-      </div>
-      <div class="add-drawing-form" id="uploadForm">
-        <p class="form-description">Upload a PowerBall data file to replace or add to the existing data.</p>
-        
-        <div class="form-row">
-          <div class="form-group" style="flex: 1;">
-            <label for="fileInput">Select Data File (.txt)</label>
-            <input type="file" id="fileInput" accept=".txt" class="form-input" style="padding: 10px;">
-          </div>
-        </div>
-        
-        <div class="form-actions">
-          <button id="uploadBtn" class="btn btn-add" disabled>
-            <span class="btn-icon">📤</span>
-            Load Data
-          </button>
           <button id="resetDataBtn" class="btn btn-clear">
             Reset to Default
           </button>
         </div>
         
-        <div class="form-message" id="uploadMessage" style="display: none;"></div>
+        <div class="form-message" id="formMessage" style="display: none;"></div>
       </div>
     </section>
 
@@ -317,7 +294,7 @@
 
     <!-- Disclaimer -->
     <footer class="disclaimer">
-      <p>⚠️ <strong>Disclaimer:</strong> Lottery drawings are random. This tool does not improve odds or guarantee wins. For entertainment purposes only.</p>
+      <p>⚠️ <strong>Disclaimer:</strong> Lottery drawings are random. This tool does not improve odds or guarantee wins. For entertainment purposes only. User-added drawings are stored locally in your browser only and do not affect other users.</p>
     </footer>
   </div>
 
