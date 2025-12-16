@@ -77,9 +77,7 @@ const elements = {
   rateWb3: document.getElementById('rateWb3'),
   rateWb4: document.getElementById('rateWb4'),
   rateWb5: document.getElementById('rateWb5'),
-  ratePb: document.getElementById('ratePb'),
-  ratedNumbersDisplay: document.getElementById('ratedNumbersDisplay'),
-  ratedNumbersRating: document.getElementById('ratedNumbersRating')
+  ratePb: document.getElementById('ratePb')
 };
 
 // ============================================
@@ -457,11 +455,36 @@ function rateUserNumbers() {
         powerball: powerballProbability,
         averageStrength: averageStrength.toFixed(1),
         rating: ticketRating
-      }
+      },
+      timestamp: new Date().toISOString(),
+      isRated: true // Flag to indicate this is a user-rated ticket
     };
     
-    // Display the results
-    displayRatedNumbers(ratedTicket);
+    // Add to session and history (like generated tickets)
+    session.addTicket(ratedTicket);
+    displayLatestTicket(ratedTicket); // Show in main "Your Numbers" section
+    addToHistory(ratedTicket);
+    updateStats();
+    
+    // Clear input fields
+    elements.rateWb1.value = '';
+    elements.rateWb2.value = '';
+    elements.rateWb3.value = '';
+    elements.rateWb4.value = '';
+    elements.rateWb5.value = '';
+    elements.ratePb.value = '';
+    
+    // Show success message
+    showSuccess('Numbers rated and added to history!');
+    
+    // Scroll to the history section to show the new entry
+    const historySection = document.getElementById('ticketHistory');
+    if (historySection) {
+      setTimeout(() => {
+        historySection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 100);
+    }
+    
     console.log('Numbers rated successfully');
     
   } catch (error) {
@@ -542,81 +565,6 @@ function displayLatestTicket(ticket) {
     `;
     ratingContainer.style.display = 'block';
   }
-}
-
-function displayRatedNumbers(ticket) {
-  // Show the display section
-  elements.ratedNumbersDisplay.style.display = 'block';
-  
-  const ticketDisplay = elements.ratedNumbersDisplay.querySelector('.ticket-display');
-  
-  // Update white balls with probabilities
-  ticket.whiteBalls.forEach((num, index) => {
-    const containerId = `ratedWb${index + 1}`;
-    const container = document.getElementById(containerId);
-    if (container) {
-      const ball = container.querySelector('.ball');
-      const probLabel = container.querySelector('.prob-label');
-      
-      ball.textContent = num;
-      ball.classList.remove('animate', 'hot', 'cold');
-      
-      if (ticket.probabilities && ticket.probabilities.whiteBalls[index]) {
-        const prob = ticket.probabilities.whiteBalls[index];
-        if (prob.isHot) ball.classList.add('hot');
-        if (prob.isCold) ball.classList.add('cold');
-        
-        if (probLabel) {
-          probLabel.textContent = `${prob.relativeStrength}%`;
-          probLabel.className = 'prob-label';
-          if (prob.isHot) probLabel.classList.add('hot');
-          if (prob.isCold) probLabel.classList.add('cold');
-        }
-      }
-      
-      void ball.offsetWidth;
-      ball.classList.add('animate');
-    }
-  });
-  
-  // Update PowerBall
-  const powerballContainer = document.getElementById('ratedPb');
-  if (powerballContainer) {
-    const powerball = powerballContainer.querySelector('.ball');
-    const probLabel = powerballContainer.querySelector('.prob-label');
-    
-    powerball.textContent = ticket.powerball;
-    powerball.classList.remove('animate', 'hot', 'cold');
-    
-    if (ticket.probabilities && ticket.probabilities.powerball) {
-      const prob = ticket.probabilities.powerball;
-      if (prob.isHot) powerball.classList.add('hot');
-      if (prob.isCold) powerball.classList.add('cold');
-      
-      if (probLabel) {
-        probLabel.textContent = `${prob.relativeStrength}%`;
-        probLabel.className = 'prob-label';
-        if (prob.isHot) probLabel.classList.add('hot');
-        if (prob.isCold) probLabel.classList.add('cold');
-      }
-    }
-    
-    void powerball.offsetWidth;
-    powerball.classList.add('animate');
-  }
-  
-  // Update rating
-  if (elements.ratedNumbersRating && ticket.probabilities) {
-    const { rating, averageStrength } = ticket.probabilities;
-    elements.ratedNumbersRating.innerHTML = `
-      <span class="rating-label ${rating.class}">${rating.label}</span>
-      <span class="rating-value">${averageStrength}%</span>
-      <span class="rating-description">${rating.description}</span>
-    `;
-  }
-  
-  // Scroll to results
-  elements.ratedNumbersDisplay.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 function addToHistory(ticket) {
