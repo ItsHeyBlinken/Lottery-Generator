@@ -143,7 +143,62 @@ async function loadData() {
   updateDataStatus('loading', 'Loading data...');
   
   try {
-    // First, load the embedded data
+    const currentVersion = window.DATA_VERSION || '1.0.0';
+    let needsReanalysis = false;
+    
+    // 1. Try to load from IndexedDB cache
+    const cached = await window.IndexedDBCache.loadCache();
+    
+    if (cached && cached.version === currentVersion) {
+      // Cache hit! Use cached data
+      console.log('Loading from cache...');
+      drawings = cached.drawings;
+      frequencyData = cached.frequencyData;
+      
+      // Load any user-added drawings from localStorage
+      const userDrawings = loadUserDrawings();
+      if (userDrawings.length > 0) {
+        // Merge user drawings (avoid duplicates by date)
+        const existingDates = new Set(drawings.map(d => d.date));
+        const newUserDrawings = userDrawings.filter(ud => !existingDates.has(ud.date));
+        
+        if (newUserDrawings.length > 0) {
+          drawings = [...newUserDrawings, ...drawings];
+          needsReanalysis = true;
+        }
+      }
+      
+      // Re-analyze only if user drawings were added
+      if (needsReanalysis) {
+        frequencyData = window.FrequencyAnalyzer.analyzeFrequency(drawings);
+        // Update cache with new data
+        await window.IndexedDBCache.saveCache({
+          drawings: drawings,
+          frequencyData: frequencyData
+        }, currentVersion);
+      }
+      
+      isDataLoaded = true;
+      updateDataStatus('success', `${drawings.length} drawings loaded (cached)`);
+      elements.drawingCountStat.textContent = drawings.length.toLocaleString();
+      
+      if (drawings.length > 0) {
+        elements.latestDateStat.textContent = drawings[0].date;
+      }
+      
+      elements.generateOneBtn.disabled = false;
+      elements.generateMultiBtn.disabled = false;
+      
+      console.log('Data loaded from cache:', {
+        totalDrawings: drawings.length,
+        cached: true
+      });
+      
+      return;
+    }
+    
+    // 2. Cache miss or outdated - parse embedded data
+    console.log('Parsing embedded data...');
     const embeddedResult = window.DataParser.parseDataContent(window.POWERBALL_RAW_DATA);
     
     if (embeddedResult.errors.length > 0 && embeddedResult.drawings.length === 0) {
@@ -154,17 +209,12 @@ async function loadData() {
     
     drawings = embeddedResult.drawings;
     
-    // Load any user-added drawings from localStorage
+    // 3. Merge user drawings from localStorage
     const userDrawings = loadUserDrawings();
     if (userDrawings.length > 0) {
-      // Merge user drawings (avoid duplicates by date)
       const existingDates = new Set(drawings.map(d => d.date));
-      for (const ud of userDrawings) {
-        if (!existingDates.has(ud.date)) {
-          drawings.unshift(ud); // Add to beginning
-          existingDates.add(ud.date);
-        }
-      }
+      const newUserDrawings = userDrawings.filter(ud => !existingDates.has(ud.date));
+      drawings = [...newUserDrawings, ...drawings];
     }
     
     if (drawings.length === 0) {
@@ -173,8 +223,19 @@ async function loadData() {
       return;
     }
     
-    // Analyze frequency
+    // 4. Analyze frequency
     frequencyData = window.FrequencyAnalyzer.analyzeFrequency(drawings);
+    
+    // 5. Save to cache for next time
+    try {
+      await window.IndexedDBCache.saveCache({
+        drawings: drawings,
+        frequencyData: frequencyData
+      }, currentVersion);
+      console.log('Data cached successfully');
+    } catch (cacheError) {
+      console.warn('Failed to cache data (non-critical):', cacheError);
+    }
     
     isDataLoaded = true;
     
@@ -182,18 +243,17 @@ async function loadData() {
     updateDataStatus('success', `${drawings.length} drawings loaded`);
     elements.drawingCountStat.textContent = drawings.length.toLocaleString();
     
-    // Display latest drawing date
     if (drawings.length > 0) {
       elements.latestDateStat.textContent = drawings[0].date;
     }
     
-    // Enable buttons
     elements.generateOneBtn.disabled = false;
     elements.generateMultiBtn.disabled = false;
     
     console.log('Data loaded successfully:', {
       totalDrawings: drawings.length,
-      userDrawings: userDrawings.length
+      userDrawings: userDrawings.length,
+      cached: false
     });
     
   } catch (error) {
@@ -676,7 +736,7 @@ function validateBallInput(input, min, max) {
   }
 }
 
-function handleAddDrawing() {
+async function handleAddDrawing() {
   const date = elements.drawingDate.value.trim();
   const whiteBalls = [
     elements.wb1.value,
@@ -737,6 +797,17 @@ function handleAddDrawing() {
   // Update local data
   drawings.unshift(newDrawing);
   frequencyData = window.FrequencyAnalyzer.analyzeFrequency(drawings);
+  
+  // Update cache with new data
+  const currentVersion = window.DATA_VERSION || '1.0.0';
+  try {
+    await window.IndexedDBCache.saveCache({
+      drawings: drawings,
+      frequencyData: frequencyData
+    }, currentVersion);
+  } catch (cacheError) {
+    console.warn('Failed to update cache (non-critical):', cacheError);
+  }
   
   // Update UI
   elements.drawingCountStat.textContent = drawings.length.toLocaleString();
@@ -811,6 +882,15 @@ function handleFileUpload() {
     drawings = result.drawings;
     frequencyData = window.FrequencyAnalyzer.analyzeFrequency(drawings);
     
+    // Update cache
+    const currentVersion = window.DATA_VERSION || '1.0.0';
+    window.IndexedDBCache.saveCache({
+      drawings: drawings,
+      frequencyData: frequencyData
+    }, currentVersion).catch(cacheError => {
+      console.warn('Failed to update cache (non-critical):', cacheError);
+    });
+    
     // Update UI
     elements.drawingCountStat.textContent = drawings.length.toLocaleString();
     if (drawings.length > 0) {
@@ -843,6 +923,15 @@ function resetToDefaultData() {
   const result = window.DataParser.parseDataContent(window.POWERBALL_RAW_DATA);
   drawings = result.drawings;
   frequencyData = window.FrequencyAnalyzer.analyzeFrequency(drawings);
+  
+  // Update cache
+  const currentVersion = window.DATA_VERSION || '1.0.0';
+  window.IndexedDBCache.saveCache({
+    drawings: drawings,
+    frequencyData: frequencyData
+  }, currentVersion).catch(cacheError => {
+    console.warn('Failed to update cache (non-critical):', cacheError);
+  });
   
   // Update UI
   elements.drawingCountStat.textContent = drawings.length.toLocaleString();

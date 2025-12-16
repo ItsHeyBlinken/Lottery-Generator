@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Change to project root (parent of .husky directory)
+cd "$(dirname -- "$0")/.." || exit
+
+# Run the rebuild script
+node scripts/pre-commit.js
+
+# Stage the rebuilt web-dist folder
+git add web-dist/

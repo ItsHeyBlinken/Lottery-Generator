@@ -4,11 +4,13 @@
   "description": "PowerBall Lottery Generator - Desktop and Web Applications",
   "private": true,
   "scripts": {
+    "prepare": "husky",
     "electron:start": "cd electron && npm start",
     "electron:dev": "cd electron && npm run dev",
     "electron:build": "cd electron && npm run build:win",
     "web:dev": "cd web && npm run dev",
-    "web:build": "cd web && npm run build"
+    "web:build": "cd web && npm run build",
+    "web:rebuild": "cd web && npm run rebuild"
   },
   "keywords": [
     "powerball",

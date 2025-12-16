@@ -44,6 +44,7 @@ const jsFiles = [
   { src: 'src/core/dataParser.js', dest: 'src/core/dataParser.js' },
   { src: 'src/core/frequencyAnalyzer.js', dest: 'src/core/frequencyAnalyzer.js' },
   { src: 'src/core/ticketGenerator.js', dest: 'src/core/ticketGenerator.js' },
+  { src: 'src/core/indexedDB.js', dest: 'src/core/indexedDB.js' },
   { src: 'src/app.js', dest: 'src/app.js' }
 ];
 

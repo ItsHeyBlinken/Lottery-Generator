@@ -4,7 +4,9 @@
   "description": "Web version of PowerBall Lottery Generator",
   "scripts": {
     "dev": "npx serve . -p 3000",
-    "build": "node build.js"
+    "build": "node build.js",
+    "rebuild": "node scripts/generate-data.js && node build.js",
+    "prepare": "husky"
   },
   "keywords": [
     "powerball",
@@ -12,6 +14,8 @@
     "web"
   ],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
 }
-
