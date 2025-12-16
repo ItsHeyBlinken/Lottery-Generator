@@ -134,6 +134,144 @@ body {
   box-shadow: var(--shadow);
 }
 
+/* Rate Numbers Card (Side Panel) */
+.rate-numbers-card {
+  margin-bottom: 20px;
+}
+
+.rate-numbers-card .section-description {
+  color: var(--text-secondary);
+  margin-bottom: 15px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.rate-numbers-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.number-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.number-input-group label {
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.white-ball-inputs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.number-input {
+  width: 50px;
+  padding: 8px 4px;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  background: var(--secondary);
+  border: 2px solid var(--text-muted);
+  border-radius: 6px;
+  color: var(--text-primary);
+  transition: var(--transition);
+}
+
+.number-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(233, 69, 96, 0.2);
+}
+
+.number-input::placeholder {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.powerball-input-wrapper {
+  display: flex;
+  gap: 6px;
+}
+
+.powerball-input {
+  width: 50px;
+}
+
+.rate-numbers-card .btn {
+  width: 100%;
+  justify-content: center;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+.rated-numbers-display {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.rated-numbers-display h4 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Compact ticket display for side panel */
+.ticket-display.compact {
+  transform: scale(0.85);
+  transform-origin: top center;
+  margin: -10px 0;
+}
+
+.ticket-display.compact .ball {
+  width: 35px;
+  height: 35px;
+  font-size: 0.9rem;
+}
+
+.ticket-display.compact .prob-label {
+  font-size: 0.65rem;
+  margin-top: 2px;
+}
+
+.ticket-display.compact .powerball-label {
+  font-size: 0.7rem;
+}
+
+.ticket-rating.compact {
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 0.85rem;
+}
+
+.ticket-rating.compact .rating-label {
+  font-size: 0.8rem;
+}
+
+.ticket-rating.compact .rating-value {
+  font-size: 1rem;
+}
+
+.ticket-rating.compact .rating-description {
+  font-size: 0.7rem;
+  margin-top: 5px;
+}
+
 .generator-controls {
   display: flex;
   gap: 20px;
@@ -529,31 +667,132 @@ body {
 }
 
 /* Ticket History */
-.ticket-history {
-  background: var(--bg-card);
-  border-radius: var(--border-radius);
-  padding: 20px;
-  box-shadow: var(--shadow);
-  flex: 1;
-  min-height: 150px;
-}
-
-.history-header {
+.ticket-history-card {
+  max-height: 600px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-  flex-wrap: wrap;
-  gap: 10px;
+  flex-direction: column;
 }
 
-.ticket-history h3 {
+.ticket-history-card .history-header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ticket-history-card .history-header h3 {
   font-family: 'Poppins', sans-serif;
-  font-size: 1rem;
-  color: var(--text-secondary);
+  font-size: 0.9rem;
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 2px;
   margin: 0;
+}
+
+.ticket-history-card .sort-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.ticket-history-card .sort-label {
+  font-size: 0.75rem;
+}
+
+.ticket-history-card .sort-btn {
+  font-size: 0.7rem;
+  padding: 4px 8px;
+}
+
+.ticket-history-card .history-list {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 400px;
+  padding-right: 5px;
+}
+
+.ticket-history-card .history-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ticket-history-card .history-list::-webkit-scrollbar-track {
+  background: var(--secondary);
+  border-radius: 3px;
+}
+
+.ticket-history-card .history-list::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 3px;
+}
+
+.ticket-history-card .history-list::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* Compact leaderboard for side panel */
+.ticket-history-card .leaderboard {
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.ticket-history-card .leaderboard-item {
+  min-width: auto;
+  padding: 10px;
+}
+
+.ticket-history-card .leaderboard-header {
+  margin-bottom: 8px;
+}
+
+.ticket-history-card .leaderboard-title {
+  font-size: 0.75rem;
+}
+
+.ticket-history-card .leaderboard-icon {
+  font-size: 1rem;
+}
+
+.ticket-history-card .leaderboard-balls .ball {
+  width: 28px;
+  height: 28px;
+  font-size: 0.8rem;
+}
+
+.ticket-history-card .leaderboard-ticket-content {
+  gap: 6px;
+}
+
+.ticket-history-card .leaderboard-ticket-content .rating-badge {
+  font-size: 0.75rem;
+  padding: 4px 8px;
+}
+
+/* Compact history tickets for side panel */
+.ticket-history-card .history-ticket {
+  padding: 8px 10px;
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+}
+
+.ticket-history-card .history-ticket .mini-ball {
+  width: 24px;
+  height: 24px;
+  font-size: 0.75rem;
+}
+
+.ticket-history-card .history-ticket .rating-badge {
+  font-size: 0.7rem;
+  padding: 3px 8px;
+  border-radius: 12px;
+}
+
+.ticket-history-card .empty-history {
+  padding: 15px;
+  font-size: 0.85rem;
 }
 
 /* Sort Controls */
@@ -939,9 +1178,18 @@ body {
     min-width: 200px;
   }
   
+  .rate-numbers-card {
+    min-width: 280px;
+  }
+  
   .ticket-display {
     flex-direction: column;
     gap: 20px;
+  }
+  
+  .ticket-display.compact {
+    transform: scale(1);
+    margin: 0;
   }
   
   .ball {

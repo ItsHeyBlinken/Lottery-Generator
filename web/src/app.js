@@ -69,7 +69,17 @@ const elements = {
   // Rating guide
   ratingGuideToggle: document.getElementById('ratingGuideToggle'),
   ratingGuideContent: document.getElementById('ratingGuideContent'),
-  guideToggleIcon: document.getElementById('guideToggleIcon')
+  guideToggleIcon: document.getElementById('guideToggleIcon'),
+  // Rate numbers elements
+  rateNumbersBtn: document.getElementById('rateNumbersBtn'),
+  rateWb1: document.getElementById('rateWb1'),
+  rateWb2: document.getElementById('rateWb2'),
+  rateWb3: document.getElementById('rateWb3'),
+  rateWb4: document.getElementById('rateWb4'),
+  rateWb5: document.getElementById('rateWb5'),
+  ratePb: document.getElementById('ratePb'),
+  ratedNumbersDisplay: document.getElementById('ratedNumbersDisplay'),
+  ratedNumbersRating: document.getElementById('ratedNumbersRating')
 };
 
 // ============================================
@@ -107,6 +117,9 @@ function setupEventListeners() {
   elements.addDrawingBtn.addEventListener('click', handleAddDrawing);
   elements.clearFormBtn.addEventListener('click', clearDrawingForm);
   elements.drawingDate.addEventListener('input', formatDateInput);
+  
+  // Rate numbers
+  elements.rateNumbersBtn.addEventListener('click', rateUserNumbers);
   
   // Ball input validation
   const ballInputs = [elements.wb1, elements.wb2, elements.wb3, elements.wb4, elements.wb5];
@@ -248,6 +261,7 @@ async function loadData() {
     
     elements.generateOneBtn.disabled = false;
     elements.generateMultiBtn.disabled = false;
+    elements.rateNumbersBtn.disabled = false;
     
     console.log('Data loaded successfully:', {
       totalDrawings: drawings.length,
@@ -347,6 +361,101 @@ function generateMultipleTickets() {
   }
 }
 
+function rateUserNumbers() {
+  if (!isDataLoaded || !frequencyData) {
+    showError('Data not loaded. Please wait or refresh the page.');
+    return;
+  }
+  
+  try {
+    // Get user input
+    const wb1 = parseInt(elements.rateWb1.value, 10);
+    const wb2 = parseInt(elements.rateWb2.value, 10);
+    const wb3 = parseInt(elements.rateWb3.value, 10);
+    const wb4 = parseInt(elements.rateWb4.value, 10);
+    const wb5 = parseInt(elements.rateWb5.value, 10);
+    const pb = parseInt(elements.ratePb.value, 10);
+    
+    // Validate inputs
+    const whiteBalls = [wb1, wb2, wb3, wb4, wb5];
+    
+    // Check if all fields are filled
+    if (whiteBalls.some(n => isNaN(n) || n < 1) || isNaN(pb) || pb < 1) {
+      showError('Please enter all numbers (5 white balls 1-69, 1 PowerBall 1-26)');
+      return;
+    }
+    
+    // Check white ball ranges
+    if (whiteBalls.some(n => n < 1 || n > 69)) {
+      showError('White balls must be between 1 and 69');
+      return;
+    }
+    
+    // Check PowerBall range
+    if (pb < 1 || pb > 26) {
+      showError('PowerBall must be between 1 and 26');
+      return;
+    }
+    
+    // Check for duplicate white balls
+    const whiteBallSet = new Set(whiteBalls);
+    if (whiteBallSet.size !== 5) {
+      showError('White balls must be unique (no duplicates)');
+      return;
+    }
+    
+    // Sort white balls
+    whiteBalls.sort((a, b) => a - b);
+    
+    // Calculate probabilities using the same logic as generateTicket
+    const { 
+      whiteBallFrequencies, 
+      powerballFrequencies,
+      totalDrawings,
+      totalWhiteBallDraws
+    } = frequencyData;
+    
+    const whiteBallProbabilities = whiteBalls.map(num => ({
+      number: num,
+      ...window.TicketGenerator.calculateProbability(num, whiteBallFrequencies, totalWhiteBallDraws, 69)
+    }));
+    
+    const powerballProbability = {
+      number: pb,
+      ...window.TicketGenerator.calculateProbability(pb, powerballFrequencies, totalDrawings, 26)
+    };
+    
+    // Calculate overall ticket score (average relative strength)
+    const allStrengths = [
+      ...whiteBallProbabilities.map(p => parseFloat(p.relativeStrength)),
+      parseFloat(powerballProbability.relativeStrength)
+    ];
+    const averageStrength = allStrengths.reduce((a, b) => a + b, 0) / allStrengths.length;
+    
+    // Get ticket rating
+    const ticketRating = window.TicketGenerator.getTicketRating(averageStrength);
+    
+    // Create ticket-like object for display
+    const ratedTicket = {
+      whiteBalls,
+      powerball: pb,
+      probabilities: {
+        whiteBalls: whiteBallProbabilities,
+        powerball: powerballProbability,
+        averageStrength: averageStrength.toFixed(1),
+        rating: ticketRating
+      }
+    };
+    
+    // Display the results
+    displayRatedNumbers(ratedTicket);
+    
+  } catch (error) {
+    showError(`Failed to rate numbers: ${error.message}`);
+    console.error('Error rating numbers:', error);
+  }
+}
+
 // ============================================
 // Display Functions
 // ============================================
@@ -419,6 +528,81 @@ function displayLatestTicket(ticket) {
     `;
     ratingContainer.style.display = 'block';
   }
+}
+
+function displayRatedNumbers(ticket) {
+  // Show the display section
+  elements.ratedNumbersDisplay.style.display = 'block';
+  
+  const ticketDisplay = elements.ratedNumbersDisplay.querySelector('.ticket-display');
+  
+  // Update white balls with probabilities
+  ticket.whiteBalls.forEach((num, index) => {
+    const containerId = `ratedWb${index + 1}`;
+    const container = document.getElementById(containerId);
+    if (container) {
+      const ball = container.querySelector('.ball');
+      const probLabel = container.querySelector('.prob-label');
+      
+      ball.textContent = num;
+      ball.classList.remove('animate', 'hot', 'cold');
+      
+      if (ticket.probabilities && ticket.probabilities.whiteBalls[index]) {
+        const prob = ticket.probabilities.whiteBalls[index];
+        if (prob.isHot) ball.classList.add('hot');
+        if (prob.isCold) ball.classList.add('cold');
+        
+        if (probLabel) {
+          probLabel.textContent = `${prob.relativeStrength}%`;
+          probLabel.className = 'prob-label';
+          if (prob.isHot) probLabel.classList.add('hot');
+          if (prob.isCold) probLabel.classList.add('cold');
+        }
+      }
+      
+      void ball.offsetWidth;
+      ball.classList.add('animate');
+    }
+  });
+  
+  // Update PowerBall
+  const powerballContainer = document.getElementById('ratedPb');
+  if (powerballContainer) {
+    const powerball = powerballContainer.querySelector('.ball');
+    const probLabel = powerballContainer.querySelector('.prob-label');
+    
+    powerball.textContent = ticket.powerball;
+    powerball.classList.remove('animate', 'hot', 'cold');
+    
+    if (ticket.probabilities && ticket.probabilities.powerball) {
+      const prob = ticket.probabilities.powerball;
+      if (prob.isHot) powerball.classList.add('hot');
+      if (prob.isCold) powerball.classList.add('cold');
+      
+      if (probLabel) {
+        probLabel.textContent = `${prob.relativeStrength}%`;
+        probLabel.className = 'prob-label';
+        if (prob.isHot) probLabel.classList.add('hot');
+        if (prob.isCold) probLabel.classList.add('cold');
+      }
+    }
+    
+    void powerball.offsetWidth;
+    powerball.classList.add('animate');
+  }
+  
+  // Update rating
+  if (elements.ratedNumbersRating && ticket.probabilities) {
+    const { rating, averageStrength } = ticket.probabilities;
+    elements.ratedNumbersRating.innerHTML = `
+      <span class="rating-label ${rating.class}">${rating.label}</span>
+      <span class="rating-value">${averageStrength}%</span>
+      <span class="rating-description">${rating.description}</span>
+    `;
+  }
+  
+  // Scroll to results
+  elements.ratedNumbersDisplay.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 function addToHistory(ticket) {

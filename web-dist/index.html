@@ -93,6 +93,80 @@
 
       <!-- Info Panel -->
       <aside class="info-panel">
+        <!-- Rate Your Numbers Section -->
+        <div class="stats-card rate-numbers-card">
+          <h3>⭐ Rate Your Numbers</h3>
+          <p class="section-description">Enter your own PowerBall numbers to see their historical rating</p>
+          
+          <div class="rate-numbers-form">
+            <div class="number-input-group">
+              <label>White Balls (1-69)</label>
+              <div class="white-ball-inputs">
+                <input type="number" id="rateWb1" min="1" max="69" class="number-input" placeholder="--">
+                <input type="number" id="rateWb2" min="1" max="69" class="number-input" placeholder="--">
+                <input type="number" id="rateWb3" min="1" max="69" class="number-input" placeholder="--">
+                <input type="number" id="rateWb4" min="1" max="69" class="number-input" placeholder="--">
+                <input type="number" id="rateWb5" min="1" max="69" class="number-input" placeholder="--">
+              </div>
+            </div>
+            
+            <div class="number-input-group">
+              <label>PowerBall (1-26)</label>
+              <div class="powerball-input-wrapper">
+                <input type="number" id="ratePb" min="1" max="26" class="number-input powerball-input" placeholder="--">
+              </div>
+            </div>
+            
+            <button id="rateNumbersBtn" class="btn btn-primary" disabled>
+              <span class="btn-icon">⭐</span>
+              Rate My Numbers
+            </button>
+          </div>
+
+          <!-- Rating Results Display -->
+          <div class="rated-numbers-display" id="ratedNumbersDisplay" style="display: none;">
+            <h4>Your Numbers Rating</h4>
+            <div class="ticket-display compact">
+              <div class="white-balls">
+                <div class="ball-container" id="ratedWb1">
+                  <div class="ball white">--</div>
+                  <span class="prob-label">--%</span>
+                </div>
+                <div class="ball-container" id="ratedWb2">
+                  <div class="ball white">--</div>
+                  <span class="prob-label">--%</span>
+                </div>
+                <div class="ball-container" id="ratedWb3">
+                  <div class="ball white">--</div>
+                  <span class="prob-label">--%</span>
+                </div>
+                <div class="ball-container" id="ratedWb4">
+                  <div class="ball white">--</div>
+                  <span class="prob-label">--%</span>
+                </div>
+                <div class="ball-container" id="ratedWb5">
+                  <div class="ball white">--</div>
+                  <span class="prob-label">--%</span>
+                </div>
+              </div>
+              <div class="powerball-section">
+                <div class="ball-container" id="ratedPb">
+                  <div class="ball powerball">--</div>
+                  <span class="prob-label">--%</span>
+                </div>
+                <span class="powerball-label">PowerBall</span>
+              </div>
+            </div>
+            
+            <!-- Rating Result -->
+            <div class="ticket-rating compact" id="ratedNumbersRating">
+              <span class="rating-label">--</span>
+              <span class="rating-value">--%</span>
+              <span class="rating-description">Enter numbers and click "Rate My Numbers"</span>
+            </div>
+          </div>
+        </div>
+
         <div class="stats-card">
           <h3>Session Statistics</h3>
           <div class="stat-item">
@@ -130,6 +204,45 @@
           <div class="stat-item">
             <span class="stat-label">Data Last Updated</span>
             <span class="stat-value small" id="dataLastUpdatedStat">--</span>
+          </div>
+        </div>
+        
+        <!-- Ticket History -->
+        <div class="stats-card ticket-history-card" id="ticketHistory">
+          <div class="history-header">
+            <h3>Generated Tickets <span class="history-count" id="historyCount">(0)</span></h3>
+            <div class="sort-controls">
+              <span class="sort-label">Sort:</span>
+              <button id="sortNewest" class="sort-btn active" title="Newest First">Newest</button>
+              <button id="sortHot" class="sort-btn" title="Hottest First">🔥 Hot</button>
+              <button id="sortCold" class="sort-btn" title="Coldest First">❄️ Cold</button>
+            </div>
+          </div>
+          
+          <!-- Leaderboard -->
+          <div class="leaderboard" id="leaderboard" style="display: none;">
+            <div class="leaderboard-item hottest">
+              <div class="leaderboard-header">
+                <span class="leaderboard-icon">🔥</span>
+                <span class="leaderboard-title">Hottest Ticket</span>
+              </div>
+              <div class="leaderboard-ticket" id="hottestTicket">
+                <span class="leaderboard-empty">--</span>
+              </div>
+            </div>
+            <div class="leaderboard-item coldest">
+              <div class="leaderboard-header">
+                <span class="leaderboard-icon">❄️</span>
+                <span class="leaderboard-title">Coldest Ticket</span>
+              </div>
+              <div class="leaderboard-ticket" id="coldestTicket">
+                <span class="leaderboard-empty">--</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="history-list" id="historyList">
+            <div class="empty-history">Generate tickets to see them here</div>
           </div>
         </div>
         
@@ -232,45 +345,6 @@
         </div>
         
         <div class="form-message" id="formMessage" style="display: none;"></div>
-      </div>
-    </section>
-
-    <!-- Ticket History -->
-    <section class="ticket-history" id="ticketHistory">
-      <div class="history-header">
-        <h3>Generated Tickets <span class="history-count" id="historyCount">(0)</span></h3>
-        <div class="sort-controls">
-          <span class="sort-label">Sort:</span>
-          <button id="sortNewest" class="sort-btn active" title="Newest First">Newest</button>
-          <button id="sortHot" class="sort-btn" title="Hottest First">🔥 Hot</button>
-          <button id="sortCold" class="sort-btn" title="Coldest First">❄️ Cold</button>
-        </div>
-      </div>
-      
-      <!-- Leaderboard -->
-      <div class="leaderboard" id="leaderboard" style="display: none;">
-        <div class="leaderboard-item hottest">
-          <div class="leaderboard-header">
-            <span class="leaderboard-icon">🔥</span>
-            <span class="leaderboard-title">Hottest Ticket</span>
-          </div>
-          <div class="leaderboard-ticket" id="hottestTicket">
-            <span class="leaderboard-empty">--</span>
-          </div>
-        </div>
-        <div class="leaderboard-item coldest">
-          <div class="leaderboard-header">
-            <span class="leaderboard-icon">❄️</span>
-            <span class="leaderboard-title">Coldest Ticket</span>
-          </div>
-          <div class="leaderboard-ticket" id="coldestTicket">
-            <span class="leaderboard-empty">--</span>
-          </div>
-        </div>
-      </div>
-      
-      <div class="history-list" id="historyList">
-        <div class="empty-history">Generate tickets to see them here</div>
       </div>
     </section>
 
