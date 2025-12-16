@@ -126,6 +126,12 @@ body {
   margin-bottom: 25px;
 }
 
+.main-content-left {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
 /* Generator Section */
 .generator-section {
   background: var(--bg-card);
