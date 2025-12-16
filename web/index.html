@@ -91,6 +91,45 @@
         </div>
       </section>
 
+      <!-- Ticket History -->
+      <section class="ticket-history" id="ticketHistory">
+        <div class="history-header">
+          <h3>Generated Tickets <span class="history-count" id="historyCount">(0)</span></h3>
+          <div class="sort-controls">
+            <span class="sort-label">Sort:</span>
+            <button id="sortNewest" class="sort-btn active" title="Newest First">Newest</button>
+            <button id="sortHot" class="sort-btn" title="Hottest First">🔥 Hot</button>
+            <button id="sortCold" class="sort-btn" title="Coldest First">❄️ Cold</button>
+          </div>
+        </div>
+        
+        <!-- Leaderboard -->
+        <div class="leaderboard" id="leaderboard" style="display: none;">
+          <div class="leaderboard-item hottest">
+            <div class="leaderboard-header">
+              <span class="leaderboard-icon">🔥</span>
+              <span class="leaderboard-title">Hottest Ticket</span>
+            </div>
+            <div class="leaderboard-ticket" id="hottestTicket">
+              <span class="leaderboard-empty">--</span>
+            </div>
+          </div>
+          <div class="leaderboard-item coldest">
+            <div class="leaderboard-header">
+              <span class="leaderboard-icon">❄️</span>
+              <span class="leaderboard-title">Coldest Ticket</span>
+            </div>
+            <div class="leaderboard-ticket" id="coldestTicket">
+              <span class="leaderboard-empty">--</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="history-list" id="historyList">
+          <div class="empty-history">Generate tickets to see them here</div>
+        </div>
+      </section>
+
       <!-- Info Panel -->
       <aside class="info-panel">
         <!-- Rate Your Numbers Section -->
@@ -204,45 +243,6 @@
           <div class="stat-item">
             <span class="stat-label">Data Last Updated</span>
             <span class="stat-value small" id="dataLastUpdatedStat">--</span>
-          </div>
-        </div>
-        
-        <!-- Ticket History -->
-        <div class="stats-card ticket-history-card" id="ticketHistory">
-          <div class="history-header">
-            <h3>Generated Tickets <span class="history-count" id="historyCount">(0)</span></h3>
-            <div class="sort-controls">
-              <span class="sort-label">Sort:</span>
-              <button id="sortNewest" class="sort-btn active" title="Newest First">Newest</button>
-              <button id="sortHot" class="sort-btn" title="Hottest First">🔥 Hot</button>
-              <button id="sortCold" class="sort-btn" title="Coldest First">❄️ Cold</button>
-            </div>
-          </div>
-          
-          <!-- Leaderboard -->
-          <div class="leaderboard" id="leaderboard" style="display: none;">
-            <div class="leaderboard-item hottest">
-              <div class="leaderboard-header">
-                <span class="leaderboard-icon">🔥</span>
-                <span class="leaderboard-title">Hottest Ticket</span>
-              </div>
-              <div class="leaderboard-ticket" id="hottestTicket">
-                <span class="leaderboard-empty">--</span>
-              </div>
-            </div>
-            <div class="leaderboard-item coldest">
-              <div class="leaderboard-header">
-                <span class="leaderboard-icon">❄️</span>
-                <span class="leaderboard-title">Coldest Ticket</span>
-              </div>
-              <div class="leaderboard-ticket" id="coldestTicket">
-                <span class="leaderboard-empty">--</span>
-              </div>
-            </div>
-          </div>
-          
-          <div class="history-list" id="historyList">
-            <div class="empty-history">Generate tickets to see them here</div>
           </div>
         </div>
         

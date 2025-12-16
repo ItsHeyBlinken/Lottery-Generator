@@ -667,132 +667,30 @@ body {
 }
 
 /* Ticket History */
-.ticket-history-card {
-  max-height: 600px;
-  display: flex;
-  flex-direction: column;
+.ticket-history {
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  margin-top: 25px;
 }
 
-.ticket-history-card .history-header {
+.history-header {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 12px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.ticket-history-card .history-header h3 {
+.ticket-history h3 {
   font-family: 'Poppins', sans-serif;
-  font-size: 0.9rem;
-  color: var(--text-muted);
+  font-size: 1rem;
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 2px;
   margin: 0;
-}
-
-.ticket-history-card .sort-controls {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.ticket-history-card .sort-label {
-  font-size: 0.75rem;
-}
-
-.ticket-history-card .sort-btn {
-  font-size: 0.7rem;
-  padding: 4px 8px;
-}
-
-.ticket-history-card .history-list {
-  flex: 1;
-  overflow-y: auto;
-  max-height: 400px;
-  padding-right: 5px;
-}
-
-.ticket-history-card .history-list::-webkit-scrollbar {
-  width: 6px;
-}
-
-.ticket-history-card .history-list::-webkit-scrollbar-track {
-  background: var(--secondary);
-  border-radius: 3px;
-}
-
-.ticket-history-card .history-list::-webkit-scrollbar-thumb {
-  background: var(--text-muted);
-  border-radius: 3px;
-}
-
-.ticket-history-card .history-list::-webkit-scrollbar-thumb:hover {
-  background: var(--primary);
-}
-
-/* Compact leaderboard for side panel */
-.ticket-history-card .leaderboard {
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 12px;
-}
-
-.ticket-history-card .leaderboard-item {
-  min-width: auto;
-  padding: 10px;
-}
-
-.ticket-history-card .leaderboard-header {
-  margin-bottom: 8px;
-}
-
-.ticket-history-card .leaderboard-title {
-  font-size: 0.75rem;
-}
-
-.ticket-history-card .leaderboard-icon {
-  font-size: 1rem;
-}
-
-.ticket-history-card .leaderboard-balls .ball {
-  width: 28px;
-  height: 28px;
-  font-size: 0.8rem;
-}
-
-.ticket-history-card .leaderboard-ticket-content {
-  gap: 6px;
-}
-
-.ticket-history-card .leaderboard-ticket-content .rating-badge {
-  font-size: 0.75rem;
-  padding: 4px 8px;
-}
-
-/* Compact history tickets for side panel */
-.ticket-history-card .history-ticket {
-  padding: 8px 10px;
-  margin-bottom: 6px;
-  font-size: 0.85rem;
-}
-
-.ticket-history-card .history-ticket .mini-ball {
-  width: 24px;
-  height: 24px;
-  font-size: 0.75rem;
-}
-
-.ticket-history-card .history-ticket .rating-badge {
-  font-size: 0.7rem;
-  padding: 3px 8px;
-  border-radius: 12px;
-}
-
-.ticket-history-card .empty-history {
-  padding: 15px;
-  font-size: 0.85rem;
 }
 
 /* Sort Controls */
