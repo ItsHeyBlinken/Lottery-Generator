@@ -92,6 +92,57 @@
         </div>
       </section>
 
+      <section class="rating-guide-section">
+                <!-- Rating Guide -->
+                <div class="stats-card rating-guide">
+                  <div class="guide-header" id="ratingGuideToggle">
+                    <h3>❓ How Ratings Work</h3>
+                    <span class="guide-toggle-icon" id="guideToggleIcon">▼</span>
+                  </div>
+                  <div class="guide-content" id="ratingGuideContent">
+                    <div class="guide-section">
+                      <h4>What the % Means</h4>
+                      <p>Each number's <strong>relative strength</strong> compares how often it has appeared vs. how often it would if perfectly random.</p>
+                      <ul>
+                        <li><strong>100%</strong> = Appears at expected frequency</li>
+                        <li><strong>&gt;100%</strong> = Appears more often (hot)</li>
+                        <li><strong>&lt;100%</strong> = Appears less often (cold)</li>
+                      </ul>
+                    </div>
+                    <div class="guide-section">
+                      <h4>Rating Scale</h4>
+                      <div class="rating-scale">
+                        <div class="scale-item very-hot">
+                          <span class="scale-badge">🔥 Very Hot</span>
+                          <span class="scale-range">115%+</span>
+                        </div>
+                        <div class="scale-item hot">
+                          <span class="scale-badge">🔥 Hot</span>
+                          <span class="scale-range">105-115%</span>
+                        </div>
+                        <div class="scale-item average">
+                          <span class="scale-badge">Average</span>
+                          <span class="scale-range">95-105%</span>
+                        </div>
+                        <div class="scale-item cold">
+                          <span class="scale-badge">❄️ Cold</span>
+                          <span class="scale-range">85-95%</span>
+                        </div>
+                        <div class="scale-item very-cold">
+                          <span class="scale-badge">❄️ Very Cold</span>
+                          <span class="scale-range">&lt;85%</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="guide-section">
+                      <h4>Ticket Rating</h4>
+                      <p>A ticket's rating is the <strong>average</strong> of all 6 numbers' relative strengths.</p>
+                    </div>
+                    <p class="guide-disclaimer">⚠️ Past frequency does not predict future results!</p>
+                  </div>
+                </div>
+      </section>
+
       <!-- Ticket History -->
       <section class="ticket-history" id="ticketHistory">
         <div class="history-header">
@@ -248,54 +299,6 @@
           </div>
         </div>
         
-        <!-- Rating Guide -->
-        <div class="stats-card rating-guide">
-          <div class="guide-header" id="ratingGuideToggle">
-            <h3>❓ How Ratings Work</h3>
-            <span class="guide-toggle-icon" id="guideToggleIcon">▼</span>
-          </div>
-          <div class="guide-content" id="ratingGuideContent">
-            <div class="guide-section">
-              <h4>What the % Means</h4>
-              <p>Each number's <strong>relative strength</strong> compares how often it has appeared vs. how often it would if perfectly random.</p>
-              <ul>
-                <li><strong>100%</strong> = Appears at expected frequency</li>
-                <li><strong>&gt;100%</strong> = Appears more often (hot)</li>
-                <li><strong>&lt;100%</strong> = Appears less often (cold)</li>
-              </ul>
-            </div>
-            <div class="guide-section">
-              <h4>Rating Scale</h4>
-              <div class="rating-scale">
-                <div class="scale-item very-hot">
-                  <span class="scale-badge">🔥 Very Hot</span>
-                  <span class="scale-range">115%+</span>
-                </div>
-                <div class="scale-item hot">
-                  <span class="scale-badge">🔥 Hot</span>
-                  <span class="scale-range">105-115%</span>
-                </div>
-                <div class="scale-item average">
-                  <span class="scale-badge">Average</span>
-                  <span class="scale-range">95-105%</span>
-                </div>
-                <div class="scale-item cold">
-                  <span class="scale-badge">❄️ Cold</span>
-                  <span class="scale-range">85-95%</span>
-                </div>
-                <div class="scale-item very-cold">
-                  <span class="scale-badge">❄️ Very Cold</span>
-                  <span class="scale-range">&lt;85%</span>
-                </div>
-              </div>
-            </div>
-            <div class="guide-section">
-              <h4>Ticket Rating</h4>
-              <p>A ticket's rating is the <strong>average</strong> of all 6 numbers' relative strengths.</p>
-            </div>
-            <p class="guide-disclaimer">⚠️ Past frequency does not predict future results!</p>
-          </div>
-        </div>
       </aside>
     </main>
 

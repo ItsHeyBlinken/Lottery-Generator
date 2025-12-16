@@ -119,7 +119,16 @@ function setupEventListeners() {
   elements.drawingDate.addEventListener('input', formatDateInput);
   
   // Rate numbers
-  elements.rateNumbersBtn.addEventListener('click', rateUserNumbers);
+  if (elements.rateNumbersBtn) {
+    elements.rateNumbersBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log('Rate button clicked');
+      rateUserNumbers();
+    });
+  } else {
+    console.error('Rate numbers button not found');
+  }
   
   // Ball input validation
   const ballInputs = [elements.wb1, elements.wb2, elements.wb3, elements.wb4, elements.wb5];
@@ -362,12 +371,16 @@ function generateMultipleTickets() {
 }
 
 function rateUserNumbers() {
+  console.log('rateUserNumbers called');
+  
   if (!isDataLoaded || !frequencyData) {
+    console.error('Data not loaded');
     showError('Data not loaded. Please wait or refresh the page.');
     return;
   }
   
   try {
+    console.log('Starting to rate numbers...');
     // Get user input
     const wb1 = parseInt(elements.rateWb1.value, 10);
     const wb2 = parseInt(elements.rateWb2.value, 10);
@@ -449,6 +462,7 @@ function rateUserNumbers() {
     
     // Display the results
     displayRatedNumbers(ratedTicket);
+    console.log('Numbers rated successfully');
     
   } catch (error) {
     showError(`Failed to rate numbers: ${error.message}`);
